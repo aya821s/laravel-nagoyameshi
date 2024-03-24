@@ -13,6 +13,9 @@
          <li>
            <a href="{{ route('mypage') }}">マイページ</a>
          </li>
+         <li>
+            <a href="{{ route('restaurants.index') }}">店舗一覧</a>
+         </li>
          </nav>
      </header>
  

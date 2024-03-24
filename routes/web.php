@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RestaurantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,5 +24,8 @@ Route::controller(UserController::class)->group(function () {
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('restaurants', RestaurantController::class);
+Route::get('/restaurants/{id}', [Restaurant::class, 'show']);
 
 require __DIR__.'/auth.php';
