@@ -14,6 +14,10 @@
            <a href="{{ route('mypage') }}">マイページ</a>
          </li>
          </nav>
+         <li>
+         <a href="{{ route('subscription.create') }}">有料プラン登録</a>
+         </li>
+         <hr>
      </header>
      
      <main>
@@ -84,6 +88,7 @@
  </main>
  
  <footer>
+     <hr>
      <p>&copy; NAGOYAMESHI All rights reserved.</p>
  </footer>
 </body>

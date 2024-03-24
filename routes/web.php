@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\SubscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,5 +28,22 @@ Route::get('/', function () {
 
 Route::resource('restaurants', RestaurantController::class);
 Route::get('/restaurants/{id}', [Restaurant::class, 'show']);
+
+
+
+Route::controller(SubscriptionController::class)->group(function () {
+
+Route::get('subscription', function (Request $request) {
+    return view('subscription/create');
+})->middleware(['auth'])->name('subscription.create');
+
+Route::get('subscription/edit','edit')->name('subscription.edit');
+Route::get('subscription/cancel','cancel')->name('subscription.cancel');
+
+Route::post('subscription', function (Request $request) {
+    return view('subscription/store');
+})->middleware(['auth'])->name('subscription.store');
+
+});
 
 require __DIR__.'/auth.php';

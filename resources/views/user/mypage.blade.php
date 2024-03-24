@@ -13,10 +13,16 @@
          <li>
            <a href="{{ route('mypage') }}">マイページ</a>
          </li>
+
+         <li>
+         <a href="{{ route('subscription.create') }}">有料プラン登録</a>
+         </li>
+
          <li>
             <a href="{{ route('restaurants.index') }}">店舗一覧</a>
          </li>
          </nav>
+         <hr>
      </header>
  
      <main>
@@ -68,13 +74,18 @@
     </div>
     <div>お気に入り店舗一覧（有料会員のみ）</div>
     <div>予約一覧（有料会員のみ）</div>
-    <div>クレジットカード情報編集（有料会員のみ）</div>
-    <div>有料会員解約（有料会員のみ）</div>
+    <div>
+        <a href="{{ route('subscription.edit') }}">クレジットカード情報編集（有料会員のみ）</a>
+    </div>
+    <div>
+        <a href="{{ route('subscription.cancel') }}">有料会員解約（有料会員のみ）</a>
+    </div>
     <div>アカウント削除</div>
         
      </main>
  
      <footer>
+         <hr>
          <p>&copy; NAGOYAMESHI All rights reserved.</p>
      </footer>
  </body>
