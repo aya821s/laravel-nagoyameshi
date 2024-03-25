@@ -17,6 +17,7 @@
          <li>
          <a href="{{ route('subscription.create') }}">有料プラン登録</a>
          </li>
+
          <hr>
      </header>
      

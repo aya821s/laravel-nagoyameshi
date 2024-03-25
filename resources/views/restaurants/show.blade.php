@@ -17,6 +17,18 @@
          <li>
          <a href="{{ route('subscription.create') }}">有料プラン登録</a>
          </li>
+
+         <li>
+             <a href="{{ route('admin.logout') }}"
+             onclick="event.preventDefault();
+             document.getElementById('logout-form').submit();">
+             ログアウト
+             <form action="{{ route('logout') }}" method="POST">
+             @csrf
+             </form>
+             </a>
+         </li>
+
          <hr>
      </header>
 

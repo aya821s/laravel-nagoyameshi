@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\WebController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,14 +17,12 @@ use App\Http\Controllers\SubscriptionController;
 |
 */
 
+Route::get('/',  [WebController::class, 'index'])->name('top');
+
 Route::controller(UserController::class)->group(function () {
     Route::get('user/mypage', 'mypage')->name('mypage');
     Route::get('user/mypage/edit', 'edit')->name('mypage.edit');
     Route::put('user/mypage', 'update')->name('mypage.update');
-});
-
-Route::get('/', function () {
-    return view('welcome');
 });
 
 Route::resource('restaurants', RestaurantController::class);
@@ -45,5 +44,7 @@ Route::post('subscription', function (Request $request) {
 })->middleware(['auth'])->name('subscription.store');
 
 });
+
+
 
 require __DIR__.'/auth.php';

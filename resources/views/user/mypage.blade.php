@@ -21,7 +21,19 @@
          <li>
             <a href="{{ route('restaurants.index') }}">店舗一覧</a>
          </li>
+
+             <form method="POST" action="{{ route('logout') }}">
+             @csrf
+                <x-dropdown-link :href="route('logout')"
+                onclick="event.preventDefault();
+                this.closest('form').submit();">
+                {{ __('ログアウト') }}
+                </x-dropdown-link>
+             </form>
+             </a>
+
          </nav>
+         
          <hr>
      </header>
  
