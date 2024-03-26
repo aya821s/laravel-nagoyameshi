@@ -26,6 +26,8 @@ Route::controller(UserController::class)->group(function () {
     Route::get('user/mypage/edit', 'edit')->name('mypage.edit');
     Route::put('user/mypage', 'update')->name('mypage.update');
     Route::get('users/mypage/favorite', 'favorite')->name('mypage.favorite');
+    Route::get('users/delete', 'delete')->name('user.delete');
+    Route::delete('users/delete', 'destroy')->name('mypage.destroy');
 });
 
 //有料会員限定に変更する//

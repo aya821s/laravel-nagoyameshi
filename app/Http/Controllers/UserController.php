@@ -42,4 +42,18 @@ class UserController extends Controller
  
          return view('user.favorite', compact('favorite_restaurants'));
      }
+
+     public function delete(Request $request)
+     {
+        $user = Auth::user();
+ 
+        return view('user.delete', compact('user'));
+     }
+
+
+     public function destroy(Request $request)
+     {
+         Auth::user()->delete();
+         return redirect('/');
+     }
 }

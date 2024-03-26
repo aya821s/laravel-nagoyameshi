@@ -95,7 +95,9 @@
     <div>
         <a href="{{ route('subscription.cancel') }}">有料会員解約（有料会員のみ）</a>
     </div>
-    <div>アカウント削除</div>
+    <div>
+         <a href="{{ route('user.delete') }}">アカウント削除</a>
+    </div>
         
      </main>
  
