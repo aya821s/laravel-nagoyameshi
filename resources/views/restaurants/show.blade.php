@@ -65,9 +65,32 @@
      {{ $restaurant->holidays }}
  </div>
 
-<hr>
+     <div>
+     @guest
+         <form action="{{ route('favorites.store', $restaurant->id) }}" method="post">
+             @csrf
+             <button type="submit">♥ お気に入り追加</button>
+         </form>
+     @else
+         @if (Auth::user()->favorite_restaurants()->where('restaurant_id', $restaurant->id)->doesntExist())
+         <form action="{{ route('favorites.store', $restaurant->id) }}" method="post">
+             @csrf
+             <button type="submit">♥ お気に入り追加</button>
+         </form>
+         @else
+         <form action="{{ route('favorites.destroy', $restaurant->id) }}" method="post">
+             @csrf
+             @method('delete')
+             <button type="submit">♥ お気に入り解除</button>
+         </form>
+         @endif
+     @endguest
+     </div>                      
+  </div>
 
- <h3>レビュー</h3>
+  <hr>
+
+  <h3>レビュー</h3>
  <div>
      @foreach($reviews as $review)
          <div>
@@ -76,7 +99,8 @@
               <label>{{$review->created_at}} {{$review->user->name}}</label>
          </div>
      @endforeach
-             </div><br/>
+     
+  <br/>
 
 <hr>
 

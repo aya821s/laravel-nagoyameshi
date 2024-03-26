@@ -33,4 +33,13 @@ class UserController extends Controller
  
          return to_route('mypage')->with('flash_message', 'マイページを編集しました。');
     }
+
+    public function favorite()
+     {
+         $user = Auth::user();
+ 
+         $favorite_restaurants = $user->favorite_restaurants;
+ 
+         return view('user.favorite', compact('favorite_restaurants'));
+     }
 }

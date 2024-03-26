@@ -16,6 +16,7 @@
          </nav>
      </header>
 
+     <main>
      <h1>会員情報編集</h1>
      <form method="POST" action="{{ route('mypage.update', $user) }}">
          @method('PUT')
@@ -29,6 +30,7 @@
          <div>電話番号</div>
              <input type="tel" id="phone_number" name="phone_number" value="{{ old('phone_number', $user->phone_number) }}" autocomplete="tel-national" minlength="10" maxlength="11" placeholder="09012345678">
          <button type="submit">更新</button>
+     </main>
  
      <footer>
          <p>&copy; NAGOYAMESHI All rights reserved.</p>

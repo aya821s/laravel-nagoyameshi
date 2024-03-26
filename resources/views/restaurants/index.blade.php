@@ -38,8 +38,32 @@
                  <a href="{{ route('restaurants.show',$restaurant->id) }}">店舗詳細</a>
              </p>
         </div>
+
+        <div>
+     @guest
+         <form action="{{ route('favorites.store', $restaurant->id) }}" method="post">
+             @csrf
+             <button type="submit">♡</button>
+         </form>
+     @else
+         @if (Auth::user()->favorite_restaurants()->where('restaurant_id', $restaurant->id)->doesntExist())
+         <form action="{{ route('favorites.store', $restaurant->id) }}" method="post">
+             @csrf
+             <button type="submit">♡</button>
+         </form>
+         @else
+         <form action="{{ route('favorites.destroy', $restaurant->id) }}" method="post">
+             @csrf
+             @method('delete')
+             <button type="submit">♥</button>
+         </form>
+         @endif
+     @endguest
+     </div> 
+
      </div>
      @endforeach
+
  </main>
  
  <footer>

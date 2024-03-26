@@ -84,7 +84,10 @@
     <div>
         <a href="{{route('mypage.edit')}}">マイページ編集</a>
     </div>
-    <div>お気に入り店舗一覧（有料会員のみ）</div>
+    <div>
+        <a href="{{ route('mypage.favorite') }}">お気に入り店舗一覧（有料会員のみ）</a>
+    </div>
+
     <div>予約一覧（有料会員のみ）</div>
     <div>
         <a href="{{ route('subscription.edit') }}">クレジットカード情報編集（有料会員のみ）</a>
