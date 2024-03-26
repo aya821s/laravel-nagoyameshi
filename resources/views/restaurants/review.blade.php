@@ -4,7 +4,7 @@
  <head>
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>レストラン詳細</title>
+     <title>レビュー投稿</title>
  </head>
  
  <body>
@@ -15,7 +15,7 @@
          </li>
          </nav>
          <li>
-         <a href="{{ route('subscription.create') }}">有料プラン登録</a>
+         <a href="{{ route('restaurants.index') }}">店舗一覧</a>
          </li>
 
          <hr>
@@ -33,56 +33,10 @@
       <img src="{{ asset('img/dummy.png')}}">
     　@endif
  </div>
- 
- <div>
-     {{$restaurant->description}}
- </div>
 
- <br>
-
- <div>
-     <strong>営業時間</strong>
-     {{ $restaurant->opening_time }}〜{{ $restaurant->closing_time }}
- </div>
-
- <div>
-     <strong>平均予算</strong>
-     {{ $restaurant->lowest_price }}〜{{ $restaurant->highest_price }}
- </div>
-
- <div>
-     <strong>住所</strong>
-     {{ $restaurant->postal_code }} {{ $restaurant->address }}
- </div>
-
- <div>
-     <strong>電話番号</strong>
-     {{ $restaurant->phone_number }}
- </div>
-
- <div>
-     <strong>定休日</strong>
-     {{ $restaurant->holidays }}
- </div>
-
-<hr>
-
- <h3>レビュー</h3>
- <div>
-     @foreach($reviews as $review)
-         <div>
-             <h3 class="review-score-color">{{ str_repeat('★', $review->score) }}</h3>
-             <p>{{$review->content}}</p>
-              <label>{{$review->created_at}} {{$review->user->name}}</label>
-         </div>
-     @endforeach
-             </div><br/>
-
-<hr>
-
-     
+     @auth
      <div>
-     <a href="{{ route('restaurants.review') }}">レビュー投稿</a>
+        <h3>レビュー投稿</h3>
          <div>
          <form method="POST" action="{{ route('reviews.store') }}">
          @csrf
@@ -104,11 +58,7 @@
          </form>
          </div>
      </div>
-    
-
- <div>
-     <a href="{{ route('restaurants.index') }}">店舗一覧に戻る</a>
- </div>
+     @endauth
 
  </main>
  

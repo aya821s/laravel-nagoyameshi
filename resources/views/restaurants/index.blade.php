@@ -40,52 +40,6 @@
         </div>
      </div>
      @endforeach
-
-
-
-
-    <!--
-    <table> 
-     <tr>
-         <th>店名</th>
-         <th>カテゴリー</th>
-         <th>写真</th>
-         <th>説明</th>
-         <th>開店時間</th>
-         <th>閉店時間</th>
-         <th>最低価格</th>
-         <th>最高価格</th>
-         <th>郵便番号</th>
-         <th>住所</th>
-         <th>電話番号</th>
-         <th>定休日</th>
-
-     </tr>
-     @foreach ($restaurants as $restaurant)
-     <tr>
-         <td>{{ $restaurant->name }}</td>
-         <td>{{ $restaurant->category_id }}</td>
-         <td>{{ $restaurant->image }}</td>
-         <td>{{ $restaurant->description }}</td>
-         <td>{{ $restaurant->opening_time }}</td>
-         <td>{{ $restaurant->closing_time }}</td>
-         <td>{{ $restaurant->lowest_price }}</td>
-         <td>{{ $restaurant->highest_price }}</td>
-         <td>{{ $restaurant->postal_code }}</td>
-         <td>{{ $restaurant->address }}</td>
-         <td>{{ $restaurant->phone_number }}</td>
-         <td>{{ $restaurant->holidays }}</td>
-
-         
-         <td>
-             
-         </td>
-     </tr>
-     @endforeach
- </table> 
-
- -->
-
  </main>
  
  <footer>

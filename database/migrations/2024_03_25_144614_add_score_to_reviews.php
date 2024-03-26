@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('restaurants', function (Blueprint $table) {
-            $table->string('image')->default('');
+        Schema::table('reviews', function (Blueprint $table) {
+
+            $table->integer('score')->unsigned()->default(0);
         });
     }
 
@@ -21,8 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('restaurants', function (Blueprint $table) {
-            $table->dropColumn('image');
+        Schema::table('reviews', function (Blueprint $table) {
+            $table->dropColumn('score');
         });
     }
 };
