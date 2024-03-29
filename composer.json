@@ -12,7 +12,8 @@
         "laravel/cashier": "^15.3",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
-        "laravel/tinker": "^2.8"
+        "laravel/tinker": "^2.8",
+        "payjp/payjp-php": "^1.5"
     },
     "require-dev": {
         "askdkc/breezejp": "^1.8",

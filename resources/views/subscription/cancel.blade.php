@@ -4,7 +4,7 @@
  <head>
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>会員情報</title>
+     <title>有料プラン解約</title>
  </head>
  
  <body>
@@ -33,8 +33,11 @@
         </ul>
      </div>
 
+     <div>
+     <form id="cardForm" action="{{ route('subscription.destroy') }}" method="post">
+       @csrf
     <button>解約</button>
-
+    </div>
      </main>
  
      <footer>

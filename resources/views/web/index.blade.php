@@ -14,7 +14,14 @@
      </header>
 
      <main>
-     @if (Route::has('login'))
+        @if (session('flash_message'))
+            <p>{{ session('flash_message') }}</p>
+        @endif
+        @if (session('error_message'))
+            <p>{{ session('error_message') }}</p>
+        @endif
+
+        @if (Route::has('login'))
                 <div>
                     @auth
                     <a href="{{ route('restaurants.index') }}">店舗一覧</a>
