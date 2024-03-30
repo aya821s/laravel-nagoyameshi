@@ -19,7 +19,13 @@ class Restaurant extends Model
          return $this->hasMany(Review::class);
      }
 
-     public function favorited_users() {
+     public function favorited_users() 
+     {
         return $this->belongsToMany(User::class)->withTimestamps();
-    }
+     }
+
+    public function reserved_users() 
+     {
+        return $this->belongsToMany(Reservation::class);
+     }
 }

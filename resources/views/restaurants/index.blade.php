@@ -35,9 +35,10 @@
              <p>
                  {{$restaurant->name}}<br>
                  <label>￥{{$restaurant->lowest_price}}〜{{$restaurant->highest_price}}</label><br>
-                 <a href="{{ route('restaurants.show',$restaurant->id) }}">店舗詳細</a>
+                 <a href="{{ route('restaurants.show', $restaurant) }}">店舗詳細</a>
+                 <a href="{{ route('reservations.create', $restaurant) }}">予約</a>
              </p>
-        </div>
+
 
         <div>
      @guest
@@ -63,6 +64,8 @@
 
      </div>
      @endforeach
+
+     {{ $restaurants->links() }}
 
  </main>
  

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
+use App\Models;
 
 class RestaurantController extends Controller
 {
@@ -12,7 +13,7 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        $restaurants = Restaurant::all();
+        $restaurants = Restaurant::paginate(20);
  
         return view('restaurants.index', compact('restaurants'));
     }

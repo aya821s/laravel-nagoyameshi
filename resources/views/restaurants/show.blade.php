@@ -27,6 +27,10 @@
  </div>
  <div>
      <h1> {{$restaurant->name}}</h1>
+     @if (session('flash_message'))
+             <p>{{ session('flash_message') }}</p>
+     @endif
+
      @if ($restaurant->image !== "")
      <img src="{{ asset($restaurant->image) }}" width="200" height="150"> 
      @else
@@ -65,6 +69,10 @@
      {{ $restaurant->holidays }}
  </div>
 
+ <div>
+     <a href="{{ route('reservations.create', $restaurant) }}"><strong>予約</strong></a>
+ </div>
+
      <div>
      @guest
          <form action="{{ route('favorites.store', $restaurant->id) }}" method="post">
@@ -100,35 +108,12 @@
          </div>
      @endforeach
      
+     <div>
+        <a href="{{ route('review.create', $restaurant) }}"><strong>レビュー投稿</strong></a>
+     </div>
   <br/>
 
 <hr>
-
-     
-     <div>
-     <a href="{{ route('restaurants.review') }}">レビュー投稿</a>
-         <div>
-         <form method="POST" action="{{ route('reviews.store') }}">
-         @csrf
-         <h4>評価</h4>
-                 <select name="score" class="form-control m-2 review-score-color">
-                 <option value="5" class="review-score-color">★★★★★</option>
-                 <option value="4" class="review-score-color">★★★★</option>
-                 <option value="3" class="review-score-color">★★★</option>
-                 <option value="2" class="review-score-color">★★</option>
-                 <option value="1" class="review-score-color">★</option>
-             </select>
-         <p>レビュー内容</p>
-                 @error('content')
-                  <strong>レビュー内容を入力してください</strong>
-                 @enderror
-             <textarea name="content"></textarea>
-             <input type="hidden" name="restaurant_id" value="{{$restaurant->id}}">
-             <button type="submit">レビューを追加</button>
-         </form>
-         </div>
-     </div>
-    
 
  <div>
      <a href="{{ route('restaurants.index') }}">店舗一覧に戻る</a>

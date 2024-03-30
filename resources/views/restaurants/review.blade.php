@@ -38,7 +38,7 @@
      <div>
         <h3>レビュー投稿</h3>
          <div>
-         <form method="POST" action="{{ route('reviews.store') }}">
+         <form method="POST" action="{{ route('reviews.store', $restaurant) }}">
          @csrf
          <h4>評価</h4>
                  <select name="score" class="form-control m-2 review-score-color">

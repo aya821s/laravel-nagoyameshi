@@ -10,11 +10,14 @@ use App\Models\Restaurant;
 class ReviewController extends Controller
 
 {
-    public function index(Restaurant $restaurant) {
-        return view('restaurants.review');
+    public function create(Restaurant $restaurant) {
+
+        return view('restaurants.review', compact('restaurant'));
     }
 
-    public function store(Request $request)
+    
+
+    public function store(Request $request, Restaurant $restaurant)
     {
         $request->validate([
              'content' => 'required'
@@ -27,7 +30,7 @@ class ReviewController extends Controller
          $review->score = $request->input('score');
          $review->save();
  
-         return back();
+         return to_route('restaurants.show', $restaurant->id)->with('flash_message', 'レビューを投稿しました。');
     }
 }
 
