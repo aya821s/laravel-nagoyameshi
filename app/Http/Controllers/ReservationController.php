@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
+use App\Models\Restaurant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Models\Restaurant;
+
 
 class ReservationController extends Controller
 {
@@ -32,10 +33,9 @@ class ReservationController extends Controller
             'reservation_time' => 'required|date_format:H:i',
         ]);
         
+        $reservation = new Reservation();
         $reservation->restaurant_id = $request->input('restaurant_id');
         $reservation->number_of_people = $request->input('number_of_people');
-
-        $reservation = new Reservation();
         $reservation->user_id = Auth::user()->id;
         $reserved_date = $request->input('reservation_date');  
         $reserved_time = $request->input('reservation_time');

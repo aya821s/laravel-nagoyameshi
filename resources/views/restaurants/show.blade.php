@@ -27,10 +27,6 @@
  </div>
  <div>
      <h1> {{$restaurant->name}}</h1>
-     @if (session('flash_message'))
-             <p>{{ session('flash_message') }}</p>
-     @endif
-
      @if ($restaurant->image !== "")
      <img src="{{ asset($restaurant->image) }}" width="200" height="150"> 
      @else
@@ -114,7 +110,6 @@
   <br/>
 
 <hr>
-
  <div>
      <a href="{{ route('restaurants.index') }}">店舗一覧に戻る</a>
  </div>

@@ -3,40 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Models\Restaurant;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models;
 
+
 class RestaurantController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function index(Request $request)
     {
-        $restaurants = Restaurant::paginate(20);
- 
-        return view('restaurants.index', compact('restaurants'));
+        $keyword = $request->keyword;
+
+        if ($request->category !== null) {
+            $restaurants = Restaurant::where('category_id', $request->category)->paginate(5);
+            $total_count = Restaurant::where('category_id', $request->category)->count();
+            $category = Category::find($request->category);
+        } elseif ($keyword !== null) {
+            
+            $restaurants = Restaurant::where('name', 'like', "%{$keyword}%")->paginate(5);
+            $total_count = $restaurants->total();
+            $category = null;
+        }
+        else {
+            $restaurants = Restaurant::paginate(5);
+            $total_count = "";
+            $category = null;
+        }
+       $categories = Category::all();
+
+        return view('restaurants.index', compact('restaurants', 'category', 'categories', 'total_count', 'keyword'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Restaurant $restaurant)
     {
         $reviews = $restaurant->reviews()->get();
@@ -45,27 +44,4 @@ class RestaurantController extends Controller
   
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Restaurant $restaurant)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Restaurant $restaurant)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Restaurant $restaurant)
-    {
-        //
-    }
 }

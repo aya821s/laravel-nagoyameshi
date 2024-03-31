@@ -32,17 +32,23 @@ Route::controller(UserController::class)->group(function () {
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('/restaurants', RestaurantController::class);
-    Route::get('/restaurants/{id}', [RestaurantController::class, 'show']);
+    Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants.index');
+    Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show'])->name('restaurants.show');
+    Route::get('/restaurants/search', [RestaurantController::class, 'edit'])->name('restaurants.search');
 });
+
 
 Route::middleware(['notsubscribed'])->group(function () {
     Route::get('/subscription', [SubscriptionController::class, 'create'])->name('subscription.create');
     Route::post('/subscription/store', [SubscriptionController::class, 'store'])->name('subscription.store');
 });
 
+
 //+ 管理者としてログインしていない//
 Route::middleware(['subscribed'])->group(function () {
+        
+});
+
     Route::get('/users/mypage/favorite', [UserController::class, 'favorite'])->name('mypage.favorite');
 
     Route::get('/reviews/{restaurant}', [ReviewController::class, 'create'])->name('review.create');
@@ -60,6 +66,6 @@ Route::middleware(['subscribed'])->group(function () {
     Route::get('/reservations/{restaurant}', [ReservationController::class, 'create'])->name('reservations.create');
     Route::post('/reservations/{restaurant}', [ReservationController::class, 'store'])->name('reservations.store');
     Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
-});
+    
 
 require __DIR__.'/auth.php';
