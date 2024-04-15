@@ -32,5 +32,15 @@ class ReviewController extends Controller
  
          return to_route('restaurants.show', $restaurant->id)->with('flash_message', 'レビューを投稿しました。');
     }
+
+    public function destroy(Reviw $review) {
+        if ($review->user_id !== Auth::id()) {
+            return redirect()->route('posts.index')->with('error_message', '不正なアクセスです。');
+        }
+
+        $review->delete();
+
+        return redirect()->route('restaurants.show')->with('flash_message', 'レビューを削除しました。');
+    }
 }
 

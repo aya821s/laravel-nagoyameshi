@@ -9,17 +9,6 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\ReservationController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
 Route::get('/',  [WebController::class, 'index'])->name('top');
 
 Route::controller(UserController::class)->group(function () {
@@ -39,20 +28,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 Route::middleware(['notsubscribed'])->group(function () {
+});
     Route::get('/subscription', [SubscriptionController::class, 'create'])->name('subscription.create');
     Route::post('/subscription/store', [SubscriptionController::class, 'store'])->name('subscription.store');
-});
+
 
 
 //+ 管理者としてログインしていない//
 Route::middleware(['subscribed'])->group(function () {
-        
-});
-
     Route::get('/users/mypage/favorite', [UserController::class, 'favorite'])->name('mypage.favorite');
 
     Route::get('/reviews/{restaurant}', [ReviewController::class, 'create'])->name('review.create');
     Route::post('/reviews/{restaurant}', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::delete('/reviews/{restaurant}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
 
     Route::post('/favorites/{restaurant_id}', [FavoriteController::class, 'store'])->name('favorites.store');
     Route::delete('/favorites/{restaurant_id}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
@@ -66,6 +55,7 @@ Route::middleware(['subscribed'])->group(function () {
     Route::get('/reservations/{restaurant}', [ReservationController::class, 'create'])->name('reservations.create');
     Route::post('/reservations/{restaurant}', [ReservationController::class, 'store'])->name('reservations.store');
     Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+});
     
 
 require __DIR__.'/auth.php';

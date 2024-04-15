@@ -1,110 +1,85 @@
-<!DOCTYPE html>
- <html lang="ja">
+@extends('layouts.app')
  
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>会員情報</title>
- </head>
+@section('title', 'マイページ')
  
- <body>
-     <header>
-         <nav>
-         <li>
-           <a href="{{ route('mypage') }}">マイページ</a>
-         </li>
+@section('content')
+<div class="container500">
+    <h1 class="mb-3 text-center">マイページ</h1>
 
-         <li>
-         <a href="{{ route('subscription.create') }}">有料プラン登録</a>
-         </li>
-
-         <li>
-            <a href="{{ route('restaurants.index') }}">店舗一覧</a>
-         </li>
-
-             <form method="POST" action="{{ route('logout') }}">
-             @csrf
-                <x-dropdown-link :href="route('logout')"
-                onclick="event.preventDefault();
-                this.closest('form').submit();">
-                {{ __('ログアウト') }}
-                </x-dropdown-link>
-             </form>
-             </a>
-
-         </nav>
-         
-         <hr>
-     </header>
- 
-     <main>
-         <h1>マイページ</h1>
-
-         @if (session('flash_message'))
-             <p>{{ session('flash_message') }}</p>
-         @endif
-         
-         <div class="d-flex justify-content-end align-items-end mb-3">
-                    <div>
-                        <a></a>
-                    </div>
+    @if (session('flash_message'))
+        <div class="alert alert-warning" role="alert">
+            <p class="mb-0">{{ session('flash_message') }}</p>
         </div>
-        <div>
-            <div>
-                <span>氏名</span>
-            </div>
+    @endif
 
-            <div>
-                <span>{{ $user->name }}</span>
-            </div>
+    @if (session('error_message'))
+        <div class="alert alert-danger" role="alert">
+            <p class="mb-0">{{ session('error_message') }}</p>
         </div>
-        <div>
-            <div>
-                <span>メールアドレス</span>
-             </div>
-            <div>
-                <span>{{ $user->email }}</span>
+    @endif
+
+    <div class="container mb-4">
+        <div class="row pb-2 mb-2 border-bottom">
+            <div class="col-4">
+                <span class="fw-bold">氏名</span>
             </div>
+        <div class="col">
+            <span>{{ $user->name }}</span>
         </div>
-        <div>
-            <div>
-                <span>電話番号</span>
-            </div>
-        <div>
+    </div>
+    
+    <div class="row pb-2 mb-2 border-bottom">
+        <div class="col-4">
+            <span class="fw-bold">メールアドレス</span>
+        </div>
+        <div class="col">
+            <span>{{ $user->email }}</span>
+        </div>
+    </div>
+    <div class="row pb-2 mb-2 border-bottom">
+        <div class="col-4">
+            <span class="fw-bold">電話番号</span>
+        </div>
+        <div class="col">
             <span>
-            @if ($user->phone_number !== null)
-                {{ $user->phone_number }}
-            @else
-                未設定
-            @endif
+                @if ($user->phone_number !== null)
+                    {{ $user->phone_number }}
+                @else
+                    未設定
+                @endif
             </span>
         </div>
     </div>
 
-    <div>
-        <a href="{{route('mypage.edit')}}">マイページ編集</a>
-    </div>
-    <div>
-        <a href="{{ route('mypage.favorite') }}">お気に入り店舗一覧（有料会員のみ）</a>
+    <div class="my-2">
+        <a class="orange-links" href="{{route('mypage.edit')}}">マイページ編集</a>
     </div>
 
-    <div><a href="{{ route('reservations.index') }}">予約一覧（有料会員のみ）</div>
-    <div>
-        <a href="{{ route('subscription.edit') }}">クレジットカード情報編集（有料会員のみ）</a>
-    </div>
-    <div>
-        <a href="{{ route('subscription.cancel') }}">有料会員解約（有料会員のみ）</a>
-    </div>
-    <div>
-         <a href="{{ route('user.delete') }}">アカウント削除</a>
-    </div>
-        
-     </main>
- 
-     <footer>
-         <hr>
-         <p>&copy; NAGOYAMESHI All rights reserved.</p>
-     </footer>
- </body>
- 
- </html>
+    @if (Auth::user()->subscribed('premium_plan'))
+        <div class="my-2">
+            <a class="orange-links" href="{{ route('mypage.favorite') }}">お気に入り店舗一覧</a>
+        </div>
+
+        <div class="my-2">
+            <a class="orange-links" href="{{ route('reservations.index') }}">予約一覧</a>
+        </div>
+
+        <div class="my-2">
+            <a class="orange-links" href="{{ route('subscription.edit') }}">クレジットカード情報編集</a>
+        </div>
+
+        <div class="my-2">
+            <a class="orange-links" href="{{ route('subscription.cancel') }}">有料会員解約</a>
+        </div>
+
+    @else
+        <div class="my-2">
+            <a class="orange-links" href="{{ route('subscription.create') }}">有料プラン登録</a>
+        </div>
+
+        <div class="my-2">
+            <a class="orange-links" href="{{ route('user.delete') }}">アカウント削除</a>
+        </div>
+    @endif
+</div>    
+@endsection

@@ -1,67 +1,50 @@
-<!DOCTYPE html>
- <html lang="ja">
+@extends('layouts.app')
  
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>お気に入り一覧</title>
- </head>
- 
- <body>
-     <header>
-         <nav>
-         <li>
-           <a href="{{ route('mypage') }}">マイページ</a>
-         </li>
+@section('title', 'お気に入り店舗一覧')
 
-         <li>
-            <a href="{{ route('restaurants.index') }}">店舗一覧</a>
-         </li>
-         </nav>
-     </header>
+@section('content')
 
-     <hr>
+<div class="container800">
+    <div class="my-2">  
+        <a class="orange-links" href="{{ route('top') }}">トップ</a> > <a class="orange-links" href="{{ route('mypage') }}">マイページ</a> > お気に入り店舗一覧
+    </div>
+    <h1 class="my-3 text-center">お気に入り一覧</h1>
 
-     <main>
-     <h1>お気に入り一覧</h1>
-     @if (session('flash_message'))
+    @if (session('flash_message'))
         <div role="alert">
              <p>{{ session('flash_message') }}</p>
         </div>
-     @endif
+    @endif
 
-     <table>
-     <thead>
-         <tr>
-            <th scope="col">店舗名</th>
-            <th scope="col">郵便番号</th>
-            <th scope="col">住所</th>
-            <th scope="col"></th>
-         </tr>
-     </thead>
-     <tbody>
-        @foreach ($favorite_restaurants as $favorite_restaurant)
-        <tr>
-        <td>
-            <a href="{{ route('restaurants.show', $favorite_restaurant) }}">
-                {{ $favorite_restaurant->name }}
-            </a>
-        </td>
-        <td>{{ substr($favorite_restaurant->postal_code, 0, 3) . '-' . substr($favorite_restaurant->postal_code, 3) }}</td>
-        <td>{{ $favorite_restaurant->address }}</td>
-        <td>
-        <a href="#" data-bs-toggle="modal" data-bs-target="#removeFavoriteModal" data-restaurant-id="{{ $favorite_restaurant->id }}" data-restaurant-name="{{ $favorite_restaurant->name }}">お気に入り解除</a>
-        </td>
-        </tr>
-        @endforeach
-     </tbody>
-     </table>
-     
-     </main>
- <hr>
-     <footer>
-         <p>&copy; NAGOYAMESHI All rights reserved.</p>
-     </footer>
- </body>
- 
- </html>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">店舗名</th>
+                <th scope="col">郵便番号</th>
+                <th scope="col">住所</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($favorite_restaurants as $favorite_restaurant)
+            <tr>
+                <td>
+                    <a class="orange-links" href="{{ route('restaurants.show', $favorite_restaurant) }}">
+                        {{ $favorite_restaurant->name }}
+                    </a>
+                </td>
+                <td>{{ substr($favorite_restaurant->postal_code, 0, 3) . '-' . substr($favorite_restaurant->postal_code, 3) }}</td>
+                <td>{{ $favorite_restaurant->address }}</td>
+                <td>
+                    <form action="{{ route('favorites.destroy', $favorite_restaurant->id) }}" method="post">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="orange-links">お気に入り解除</button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+@endsection

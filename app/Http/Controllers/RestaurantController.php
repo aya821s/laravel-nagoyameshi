@@ -14,26 +14,29 @@ class RestaurantController extends Controller
     public function index(Request $request)
     {
         $keyword = $request->keyword;
+        
 
         if ($request->category !== null) {
-            $restaurants = Restaurant::where('category_id', $request->category)->paginate(5);
+            $restaurants = Restaurant::where('category_id', $request->category)->sortable()->paginate(5);
             $total_count = Restaurant::where('category_id', $request->category)->count();
             $category = Category::find($request->category);
-        } elseif ($keyword !== null) {
-            
-            $restaurants = Restaurant::where('name', 'like', "%{$keyword}%")->paginate(5);
+        }
+        elseif ($keyword !== null) {
+            $restaurants = Restaurant::where('name', 'like', "%{$keyword}%")->sortable()->paginate(5);
             $total_count = $restaurants->total();
             $category = null;
-        }
+        } 
         else {
-            $restaurants = Restaurant::paginate(5);
+            $restaurants = Restaurant::sortable()->paginate(5);
             $total_count = "";
             $category = null;
         }
-       $categories = Category::all();
+        $categories = Category::all();
 
         return view('restaurants.index', compact('restaurants', 'category', 'categories', 'total_count', 'keyword'));
     }
+
+  
 
 
     public function show(Restaurant $restaurant)

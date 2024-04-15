@@ -1,125 +1,136 @@
-<!DOCTYPE html>
- <html lang="ja">
+@extends('layouts.app')
  
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>レストラン詳細</title>
- </head>
- 
- <body>
- <header>
-         <nav>
-         <li>
-           <a href="{{ route('mypage') }}">マイページ</a>
-         </li>
-         </nav>
-         <li>
-         <a href="{{ route('subscription.create') }}">有料プラン登録</a>
-         </li>
+@section('title', '店舗詳細')
 
-         <hr>
-     </header>
+@section('content')
+<div class="container500">
+    <div class="my-2">
+        <a class="orange-links" href="{{ route('top') }}">トップ</a> > <a class="orange-links" href="{{ route('restaurants.index') }}">店舗一覧</a> >店舗詳細
+    </div>
+    <div class="my-2">
+        <div class="row g-0">
+            <div class="col-sm-8">
+                <h1 class="my-2"> {{$restaurant->name}}</h1>
+            </div>
+            @if (Auth::user()->subscribed('premium_plan'))
+                <div class="col-sm-4">
+                    @if (Auth::user()->favorite_restaurants()->where('restaurant_id', $restaurant->id)->doesntExist())
+                        <form action="{{ route('favorites.store', $restaurant->id) }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn text-white orange-btn">♥ お気に入り追加</button>
+                        </form>
+                    @else
+                        <form action="{{ route('favorites.destroy', $restaurant->id) }}" method="post">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn text-white orange-btn">♥ お気に入り解除</button>
+                        </form>
+                    @endif
+                </div>
+            @endif
+        </div> 
+        
+        @if ($restaurant->image !== "")
+            <img src="{{ asset($restaurant->image) }}" width="200" height="150"> 
+        @else
+            <img src="{{ asset('img/dummy.png')}}">
+        @endif
 
-     <main>
-     
-     <div>
- </div>
- <div>
-     <h1> {{$restaurant->name}}</h1>
-     @if ($restaurant->image !== "")
-     <img src="{{ asset($restaurant->image) }}" width="200" height="150"> 
-     @else
-      <img src="{{ asset('img/dummy.png')}}">
-    　@endif
- </div>
- 
- <div>
-     {{$restaurant->description}}
- </div>
+        <div class="my-3">
+            {{$restaurant->description}}
+        </div>
 
- <br>
+        <div class="row pb-1 my-1 border-bottom">
+            <div class="col-3">
+                <strong>営業時間</strong>
+            </div>
+            <div class="col">
+                <span>
+                    {{ date('G:i', strtotime($restaurant->opening_time)) }}〜{{ date('G:i', strtotime($restaurant->closing_time)) }}
+                </span>
+            </div>
+        </div>
 
- <div>
-     <strong>営業時間</strong>
-     {{ $restaurant->opening_time }}〜{{ $restaurant->closing_time }}
- </div>
+        <div class="row pb-1 my-1 border-bottom">
+            <div class="col-3">
+                <strong>平均予算</strong>
+            </div>
+            <div class="col">
+                <span>
+                    ￥{{ number_format($restaurant->lowest_price) }}〜￥{{ number_format($restaurant->highest_price) }}
+                </span>
+            </div>
+        </div>
 
- <div>
-     <strong>平均予算</strong>
-     {{ $restaurant->lowest_price }}〜{{ $restaurant->highest_price }}
- </div>
+        <div class="row pb-1 my-1 border-bottom">
+            <div class="col-3">
+                <strong>住所</strong>
+            </div>
+            <div class="col">
+                <span>
+                    〒{{ substr($restaurant->postal_code, 0, 3) . '-' . substr($restaurant->postal_code, 3) }} 
+                    <br>
+                    {{ $restaurant->address }}
+                </span>
+            </div>
+        </div>
 
- <div>
-     <strong>住所</strong>
-     {{ $restaurant->postal_code }} {{ $restaurant->address }}
- </div>
+        <div class="row pb-1 my-1 border-bottom">
+            <div class="col-3">
+                <strong>電話番号</strong>
+            </div>
+            <div class="col">
+                <span>
+                {{ $restaurant->phone_number }}
+                </span>
+            </div>
+        </div>
 
- <div>
-     <strong>電話番号</strong>
-     {{ $restaurant->phone_number }}
- </div>
+        <div class="row pb-1 my-1 border-bottom">
+            <div class="col-3">
+                <strong>定休日</strong>
+            </div>
+            <div class="col">
+                <span>
+                    {{ $restaurant->holidays }}
+                </span>
+            </div>
+        </div>
 
- <div>
-     <strong>定休日</strong>
-     {{ $restaurant->holidays }}
- </div>
+        <div class="row pb-2 my-2 border-bottom">
+            @if (Auth::user()->subscribed('premium_plan'))
+                <a class="orange-links" href="{{ route('reservations.create', $restaurant) }}">このお店を予約する</a>
+            @else
+                <a class="orange-links" href="{{ route('subscription.create') }}">有料プランに登録して、お店を予約しよう！</a>
+            @endif
+        </div>
 
- <div>
-     <a href="{{ route('reservations.create', $restaurant) }}"><strong>予約</strong></a>
- </div>
-
-     <div>
-     @guest
-         <form action="{{ route('favorites.store', $restaurant->id) }}" method="post">
-             @csrf
-             <button type="submit">♥ お気に入り追加</button>
-         </form>
-     @else
-         @if (Auth::user()->favorite_restaurants()->where('restaurant_id', $restaurant->id)->doesntExist())
-         <form action="{{ route('favorites.store', $restaurant->id) }}" method="post">
-             @csrf
-             <button type="submit">♥ お気に入り追加</button>
-         </form>
-         @else
-         <form action="{{ route('favorites.destroy', $restaurant->id) }}" method="post">
-             @csrf
-             @method('delete')
-             <button type="submit">♥ お気に入り解除</button>
-         </form>
-         @endif
-     @endguest
-     </div>                      
-  </div>
-
-  <hr>
-
-  <h3>レビュー</h3>
- <div>
-     @foreach($reviews as $review)
-         <div>
-             <h3 class="review-score-color">{{ str_repeat('★', $review->score) }}</h3>
-             <p>{{$review->content}}</p>
-              <label>{{$review->created_at}} {{$review->user->name}}</label>
-         </div>
-     @endforeach
-     
-     <div>
-        <a href="{{ route('review.create', $restaurant) }}"><strong>レビュー投稿</strong></a>
-     </div>
-  <br/>
-
-<hr>
- <div>
-     <a href="{{ route('restaurants.index') }}">店舗一覧に戻る</a>
- </div>
-
- </main>
- 
- <footer>
-     <hr>
-     <p>&copy; NAGOYAMESHI All rights reserved.</p>
- </footer>
-</body>
-
-</html>
+        <h2 class="my-3">レビュー</h2>
+        <div class="card mb-1">
+            @foreach($reviews as $review)
+                <div class="card-header">{{$review->user->name}}</div>
+                    <div class="card-body">
+                        <div class="review-card">
+                            <p class="orange-marks">{{ str_repeat('★', $review->score) }}</p>
+                            <p>{{$review->content}}</p>
+                            <p>{{$review->created_at}} </p>
+                        </div>
+                        @if ($review->user_id === Auth::id())
+                            <form action="{{ route('reviews.destroy', $review) }}" method="POST" onsubmit="return confirm('本当に削除してもよろしいですか？');">
+                                @csrf
+                                @method('DELETE')
+                                <button class="orange-links" type="submit">削除</button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        @if (Auth::user()->subscribed('premium_plan'))
+            <div class="mb-2">
+                <a class="orange-links" href="{{ route('review.create', $restaurant) }}">レビュー投稿</a>
+            </div>
+        @endif
+    </div>
+</div>
+@endsection

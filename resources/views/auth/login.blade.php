@@ -1,50 +1,61 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@extends('layouts.app')
+ 
+@section('title', 'ログイン')
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+@section('content')
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-        <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('register') }}">
-                 会員登録
-             </a>
-            @if (Route::has('password.request'))
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ml-3" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
+<div class="main-container">
+    <div class="auth-container">
+　      <h1 class="text-center">ログイン</h1>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+
+            <!-- Email Address -->
+            <div class="py-2">
+                <input class="form-control" type="email" id="email" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="メールアドレス" autofocus>
+            </div>
+
+            <!-- Password -->
+            <div class="py-2">
+                <input class="form-control" type="password" id="password" name="password" required autocomplete="new-password" placeholder="パスワード">
+            </div>
+
+            <!-- Remember Me -->
+            <div class="py-1">
+                <label for="remember_me" class="inline-flex items-center">
+                    <input id="remember_me" type="checkbox" class="red rounded" name="remember">
+                    <span class="ms-2 text-sm text-gray-600">次回から自動的にログインする</span>
+                </label>
+            </div>
+
+            <!-- Log in -->
+            <div class="py-2">
+                <button type="submit" class="btn text-white w-100 orange-btn">ログイン</button>
+            </div>
+
+            <!-- Register -->
+            <div class="auth-contents py-2">
+                <a class="orange-links" href="{{ route('register') }}">新規会員登録はこちら</a>
+            </div>
+                
+            <!-- Password Request -->
+            @if (Route::has('password.request'))
+            <div class="auth-contents py-2">
+                <a class="orange-links" href="{{ route('password.request') }}">{{ __('パスワードをお忘れの方はこちら') }}</a>
+            </div>
+            @endif
+
+        </form>
+    </div>
+</div>
+@endsection
