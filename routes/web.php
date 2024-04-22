@@ -33,14 +33,12 @@ Route::middleware(['notsubscribed'])->group(function () {
     Route::post('/subscription/store', [SubscriptionController::class, 'store'])->name('subscription.store');
 
 
-
-//+ 管理者としてログインしていない//
 Route::middleware(['subscribed'])->group(function () {
     Route::get('/users/mypage/favorite', [UserController::class, 'favorite'])->name('mypage.favorite');
 
     Route::get('/reviews/{restaurant}', [ReviewController::class, 'create'])->name('review.create');
     Route::post('/reviews/{restaurant}', [ReviewController::class, 'store'])->name('reviews.store');
-    Route::delete('/reviews/{restaurant}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
 
     Route::post('/favorites/{restaurant_id}', [FavoriteController::class, 'store'])->name('favorites.store');

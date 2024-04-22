@@ -17,7 +17,7 @@ class SubscriptionController extends Controller
     public function create(Request $request)
     {
         $intent = auth()->user()->createSetupIntent();
-        return view('subscription.create', compact("intent"));
+        return view('subscription.create', compact('intent'));
     }
 
     public function store(Request $request)

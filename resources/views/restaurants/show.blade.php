@@ -7,6 +7,19 @@
     <div class="my-2">
         <a class="orange-links" href="{{ route('top') }}">トップ</a> > <a class="orange-links" href="{{ route('restaurants.index') }}">店舗一覧</a> >店舗詳細
     </div>
+
+    @if (session('flash_message'))
+        <div class="alert alert-warning" role="alert">
+            <p class="mb-0">{{ session('flash_message') }}</p>
+        </div>
+    @endif
+
+    @if (session('error_message'))
+        <div class="alert alert-danger" role="alert">
+            <p class="mb-0">{{ session('error_message') }}</p>
+        </div>
+    @endif
+
     <div class="my-2">
         <div class="row g-0">
             <div class="col-sm-8">
@@ -106,9 +119,12 @@
         </div>
 
         <h2 class="my-3">レビュー</h2>
-        <div class="card mb-1">
+        @if ($reviews->isEmpty())
+            <p class="my-4">まだレビューはありません。</p>
+        @else
             @foreach($reviews as $review)
-                <div class="card-header">{{$review->user->name}}</div>
+                <div class="card mb-1">
+                    <div class="card-header">{{$review->user->name}}</div>
                     <div class="card-body">
                         <div class="review-card">
                             <p class="orange-marks">{{ str_repeat('★', $review->score) }}</p>
@@ -125,9 +141,10 @@
                     </div>
                 </div>
             @endforeach
-        </div>
+        @endif
+
         @if (Auth::user()->subscribed('premium_plan'))
-            <div class="mb-2">
+            <div class="my-2">
                 <a class="orange-links" href="{{ route('review.create', $restaurant) }}">レビュー投稿</a>
             </div>
         @endif

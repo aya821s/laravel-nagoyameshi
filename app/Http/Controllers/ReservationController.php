@@ -13,7 +13,7 @@ class ReservationController extends Controller
     public function index(Reservation $reservation)
     {
         $user = Auth::user();
-        $reservations = Reservation::with('user:id')->orderBy('reserved_datetime', 'asc')->paginate(10);
+        $reservations = Reservation::where('user_id', Auth::id())->orderBy('reserved_datetime', 'asc')->paginate(10);
  
         return view('reservations.index', compact('reservations'));
     }
@@ -29,7 +29,7 @@ class ReservationController extends Controller
     {
         $request->validate([
             'number_of_people' => 'required|between:1,50',
-            'reservation_date' => 'required|date_format:Y-m-d',
+            'reservation_date' => 'required|date_format:Y-m-d|after_or_equal:today',
             'reservation_time' => 'required|date_format:H:i',
         ]);
         

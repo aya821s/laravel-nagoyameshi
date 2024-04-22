@@ -10,8 +10,8 @@
             有料プランの内容
     	</div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">・当日の2時間前までならいつでも予約可能</li>
-            <li class="list-group-item">・店舗をお好きなだけお気に入りに追加可能</li>
+            <li class="list-group-item">・いつでも来店予約可能</li>
+            <li class="list-group-item">・店舗を好きなだけお気に入りに追加可能</li>
             <li class="list-group-item">・レビューを投稿可能</li>
             <li class="list-group-item">・月額たったの300円</li>
     	</ul>
@@ -30,43 +30,53 @@
 		<div class="d-flex justify-content-center">
 			<button type="submit" class="btn text-white orange-btn" id="card-button" data-secret="{{ $intent->client_secret }}">登録</button>
 		</div>
+	</div>
+</div>
 		
 
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
-	    const stripe = Stripe("{{ config('services.stripe.pb_key') }}")
-	    const elements = stripe.elements()
-	    const cardElement = elements.create('card')	
-	    cardElement.mount('#card-element')
-	
-	    const cardHolderName = document.getElementById('card-holder-name')
-	    const cardBtn = document.getElementById('card-button')
-        const form = document.getElementById('payment-form')
-		
-	    form.addEventListener('submit', async (e) => {
-	        e.preventDefault()	
-	        cardBtn.disabled = true
-	        const { setupIntent, error } = await stripe.confirmCardSetup(
-	        	cardBtn.dataset.secret, {
-	        		payment_method: {
-	            	card: cardElement,
-	                	billing_details: {
-	                    	name: cardHolderName.value
-	                	}   
-	            	}
-	            }
-	        )
-	        if(error) {	
-	            cardBtn.disable = false
-	        } else {
-	            let token = document.createElement('input')
-	            token.setAttribute('type', 'hidden')
-	            token.setAttribute('name', 'token')
-	            token.setAttribute('value', setupIntent.payment_method)
-	            form.appendChild(token)
-	            form.submit();
-	        }
-	    })
-    </script>
-</div>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+	const stripe = window.Stripe("{{ config('services.stripe.pb_key') }}");
+    const elements = stripe.elements();
+    const cardElement = elements.create('card', {
+      hidePostalCode: true,
+    });
+    cardElement.mount('#card-element');
+
+    const cardHolderName = document.getElementById('card-holder-name');
+    const cardButton = document.getElementById('card-button');
+    const clientSecret = cardButton.dataset.secret;
+
+    const cardError = document.getElementById('card-error');
+    const errorList = document.getElementById('error-list');
+
+    cardButton.addEventListener('click', async (e) => {
+      const { setupIntent, error } = await stripe.confirmCardSetup(
+        clientSecret, {
+          payment_method: {
+            card: cardElement,
+            billing_details: { name: cardHolderName.value }
+          }
+        }
+      );
+
+      if(error) { 
+          cardBtn.disable = false
+      } else {
+        stripePaymentIdHandler(setupIntent.payment_method);
+      }
+    });
+
+    function stripePaymentIdHandler(paymentMethodId) {
+    const form = document.getElementById('payment-form');
+
+    const token = document.createElement('input');
+    token.setAttribute('type', 'hidden');
+    token.setAttribute('name', 'paymentMethodId');
+    token.setAttribute('value', paymentMethodId);
+    form.appendChild(token);
+
+    form.submit();
+    }
+</script>
 @endsection

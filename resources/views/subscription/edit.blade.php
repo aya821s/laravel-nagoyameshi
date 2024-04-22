@@ -40,7 +40,7 @@
     </div>
   </div>
 
-  <form id="card-form" action="{{ route('subscription.update') }}" method="post">
+  <form id="payment-form" action="{{ route('subscription.update') }}" method="post">
     @csrf
     @method('patch')
     <input type="text" class="form-control"  id="card-holder-name" placeholder="カード名義人" required>
@@ -49,43 +49,51 @@
   <div class="d-flex justify-content-center">
     <button class="btn text-white orange-btn" id="card-button" data-secret="{{ $intent->client_secret }}">変更</button>
   </div>
-
-  <script src="https://js.stripe.com/v3/"></script>
-  <script>
-	    const stripe = Stripe("{{ config('services.stripe.pb_key') }}")
-	    const elements = stripe.elements()
-	    const cardElement = elements.create('card')	
-	    cardElement.mount('#card-element')
-	
-	    const cardHolderName = document.getElementById('card-holder-name')
-	    const cardBtn = document.getElementById('card-button')
-      const form = document.getElementById('payment-form')
-		
-	    form.addEventListener('submit', async (e) => {
-	          e.preventDefault()	
-	          cardBtn.disabled = true
-	      const { setupIntent, error } = await stripe.confirmCardSetup(
-	        cardBtn.dataset.secret, {
-	        payment_method: {
-	            card: cardElement,
-	            billing_details: {
-	                name: cardHolderName.value
-	            }   
-	        }
-	      }
-	    )
-	
-	    if(error) {	
-	        cardBtn.disable = false
-	    } else {
-	        let token = document.createElement('input')
-	        token.setAttribute('type', 'hidden')
-	        token.setAttribute('name', 'token')
-	        token.setAttribute('value', setupIntent.payment_method)
-	        form.appendChild(token)
-	        form.submit();
-	    }
-	  })
-  </script>
 </div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+	const stripe = window.Stripe("{{ config('services.stripe.pb_key') }}");
+  const elements = stripe.elements();
+  const cardElement = elements.create('card', {
+    hidePostalCode: true,
+  });
+  cardElement.mount('#card-element');
+
+  const cardHolderName = document.getElementById('card-holder-name');
+  const cardButton = document.getElementById('card-button');
+  const clientSecret = cardButton.dataset.secret;
+
+  const cardError = document.getElementById('card-error');
+  const errorList = document.getElementById('error-list');
+
+  cardButton.addEventListener('click', async (e) => {
+    const { setupIntent, error } = await stripe.confirmCardSetup(
+      clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: { name: cardHolderName.value }
+        }
+      }
+    );
+
+    if(error) { 
+        cardBtn.disable = false
+    } else {
+      stripePaymentIdHandler(setupIntent.payment_method);
+    }
+  });
+
+  function stripePaymentIdHandler(paymentMethodId) {
+  const form = document.getElementById('payment-form');
+
+  const token = document.createElement('input');
+  token.setAttribute('type', 'hidden');
+  token.setAttribute('name', 'paymentMethodId');
+  token.setAttribute('value', paymentMethodId);
+  form.appendChild(token);
+
+  form.submit();
+  }
+</script>
 @endsection

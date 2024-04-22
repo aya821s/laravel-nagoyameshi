@@ -7,6 +7,19 @@
     <div class="my-2">
         <a class="orange-links" href="{{ route('top') }}">トップ</a> > 店舗一覧
     </div>
+
+    @if (session('flash_message'))
+        <div class="alert alert-warning" role="alert">
+            <p class="mb-0">{{ session('flash_message') }}</p>
+        </div>
+    @endif
+
+    @if (session('error_message'))
+        <div class="alert alert-danger" role="alert">
+            <p class="mb-0">{{ session('error_message') }}</p>
+        </div>
+    @endif
+    
     <div class="row">
         <div class="col-md-3">
             <div class="restaurant-search">
@@ -29,11 +42,6 @@
                 <a class="orange-links" href="{{ route('top') }}">トップ</a> > <a class="orange-links" href="{{ route('restaurants.index') }}">店舗一覧</a> > {{ $category->name }}
                 <p>{{ $keyword }}の店舗が{{ $total_count }}件見つかりました</p>
             @endif
-            
-
-
-
-
             <div class="restaurants-index">
                 @foreach($restaurants as $restaurant)
                     <div class="card border mb-2 restaurants-card">
