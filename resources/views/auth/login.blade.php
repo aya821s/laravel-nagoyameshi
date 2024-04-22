@@ -55,6 +55,10 @@
             </div>
             @endif
 
+            <div class="auth-contents py-2">
+                <a class="text-black-50 text-decoration-none" href="{{ url('/admin') }}">管理者はこちら</a>
+            </div>
+
         </form>
     </div>
 </div>

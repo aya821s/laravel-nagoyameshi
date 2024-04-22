@@ -27,7 +27,7 @@
                     <input class="form-control mb-1" name="keyword" placeholder="店名">
                     <button type="submit" class="btn text-white w-20 orange-btn">検索</button>
                 </form>
-                <h3  class="mt-3">料理ジャンルから探す</h3>
+                <h3 class="mt-3">料理ジャンルから探す</h3>
                 @foreach ($categories as $category)
                     <label class="my-1">
                         <a class="orange-links" href="{{ route('restaurants.index', ['category' => $category->id]) }}">{{ $category->name }}</a>
