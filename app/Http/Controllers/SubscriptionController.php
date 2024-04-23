@@ -22,7 +22,7 @@ class SubscriptionController extends Controller
 
     public function store(Request $request)
     {
-        $subscription = $request->user()->newSubscription('premium_plan', 'price_1Oxo4804Hf3ynxmhxHBHACpH')->create($request->token);
+        $subscription = $request->user()->newSubscription('premium_plan', 'price_1Oxo4804Hf3ynxmhxHBHACpH')->create($request->paymentMethodId);
         return to_route('mypage')->with('flash_message', '有料プランへの登録が完了しました。');
 }
 
