@@ -16,6 +16,9 @@
         </div>
     @endif
 
+    @if ($favorite_restaurants->isEmpty())
+        <p class="my-5">お気に入りに登録された店舗はありません。</p>
+    @else
     <table class="table">
         <thead>
             <tr>
@@ -46,5 +49,6 @@
             @endforeach
         </tbody>
     </table>
+    @endif
 </div>
 @endsection

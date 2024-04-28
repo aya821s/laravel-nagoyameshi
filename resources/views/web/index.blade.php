@@ -28,7 +28,7 @@
                 @endauth
                 @guest
                     <div class="mr-auto">
-                        <h1>今すぐ<a  href="{{ route('login') }}">ログイン</a>・<a href="{{ route('login') }}">会員登録</a>して、名古屋ならではの味を探そう！</h1>
+                        <h1>今すぐ<a  href="{{ route('login') }}">ログイン</a>・<a href="{{ route('register') }}">会員登録</a>して、名古屋ならではの味を探そう！</h1>
                     </div>
                 @endguest
             </div>
