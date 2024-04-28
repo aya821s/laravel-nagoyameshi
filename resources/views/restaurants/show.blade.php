@@ -125,10 +125,10 @@
             @foreach($reviews as $review)
                 <div class="card mb-1">
                     <div class="card-header">
-                        @if(isset( $review->user->name ))
-                            <p>{{ $review->user->name }}</p>
-                        @else
+                        @if(is_null( $review->user->name ))
                             <p>ユーザー</p>
+                        @else
+                            <p>{{ $review->user->name }}</p>   
                         @endif
                     </div>
                     <div class="card-body">
