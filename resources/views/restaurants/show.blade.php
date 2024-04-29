@@ -124,13 +124,7 @@
         @else
             @foreach($reviews as $review)
                 <div class="card mb-1">
-                    <div class="card-header">
-                        @if (isset($review->user->name))
-                            <p>{{ $review->user->name }}</p>
-                        @else
-                            <p>ユーザー</p>
-                        @endif
-                    </div>
+                    <div class="card-header">{{$review->user->name}}</div>
                     <div class="card-body">
                         <div class="review-card">
                             <p class="orange-marks">{{ str_repeat('★', $review->score) }}</p>
